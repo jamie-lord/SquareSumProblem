@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SquareSumProblem
@@ -24,16 +25,23 @@ namespace SquareSumProblem
             b = temp;
         }
 
+        private static List<int[]> _results = new List<int[]>();
+
         private static void Permutations(int[] list, int k, int m)
         {
             int i;
             if (k == m)
             {
-                for (i = 0; i <= m; i++)
+                if (IsListOrderCorrect(ref list))
                 {
-                    Console.Write($"{list[i]} ");
+                    for (i = 0; i <= m; i++)
+                    {
+                        Console.Write($"{list[i]} ");
+                    }
+                    Console.Write("\n");
+
+                    _results.Add(list);
                 }
-                Console.Write("\n");
             }
             else
                 for (i = k; i <= m; i++)
@@ -42,6 +50,24 @@ namespace SquareSumProblem
                     Permutations(list, k + 1, m);
                     SwapTwoNumbers(ref list[k], ref list[i]);
                 }
+        }
+
+        private static bool IsListOrderCorrect(ref int[] list)
+        {
+            for (int i = 0; i < list.Length; i++)
+            {
+                if (!SumIsSquare(ref list[i], ref list[i + 1]))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+            
+
+        private static bool SumIsSquare(ref int i, ref int j)
+        {
+            return Math.Sqrt(i + j) % 1 == 0;
         }
     }
 }
